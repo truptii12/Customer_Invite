@@ -1,4 +1,4 @@
-/**
+/** This program is written to fetch the customer within 100kms and invite them for food and drinks using law of cosine.
  * 
  */
 package Customer_Invitation.Customer_Invitation;
