@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -17,11 +18,12 @@ import org.json.simple.parser.JSONParser;
  * @author Trupti Kulkarni
  *
  */
-public class CustomerInvite {
+public class CustomerInvite implements Comparable<CustomerInvite> {
 
 	double longitude;
 	double latitude;
 	private String name;
+	private Long user_id;
 	private double distance;
     static double dub_office_longitude,dub_office_latitude;
 	public double getLongitude() {
@@ -38,7 +40,7 @@ public class CustomerInvite {
                     + Math.cos(dub_office_latitude) * Math.cos(customer.latitude) * Math.cos(dub_office_longitude - customer.longitude));
 		    customer.distance=angle1 *60;
 		    if(customer.distance<=100.00)
-		    System.out.println("Send invitation for Food and Drinks to "+ customer.name +" whose located at "+customer.distance+" distance");
+		    System.out.println("Send invitation for Food and Drinks to "+ customer.name +"with user id "+customer.user_id+" whose located at "+customer.distance+" distance");
 		}
 		}
 		catch(ArithmeticException e)
@@ -68,14 +70,18 @@ public class CustomerInvite {
 	            String name1 = (String) jsonObject.get("name");
 	            String longi = (String) jsonObject.get("longitude");
 	            String latitude = (String) jsonObject.get("latitude");
+	            Long id = (Long) jsonObject.get("user_id");
+	            
 	            CustomerInvite customer= new CustomerInvite();
 	         //To convert Decimal to radians 
 	           customer.latitude= Math.toRadians((Double.parseDouble(latitude)));
 	           customer.longitude=Math.toRadians((Double.parseDouble(longi)));
+	           customer.user_id=id;
 	           customer.name=name1;
 	           Customer_list.add(customer);
 	         }
-			
+			 Collections.sort(Customer_list);
+			 
 	        }
 	        catch(ClassCastException e)
 	        {
@@ -121,6 +127,11 @@ public class CustomerInvite {
 	            e.printStackTrace();
 	        }
 		  }
+
+	public int compareTo(CustomerInvite cust) {
+		// TODO Auto-generated method stub
+				return Long.compare(user_id, cust.user_id);
+	}
 }
 
 
